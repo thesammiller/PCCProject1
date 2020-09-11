@@ -2,9 +2,11 @@ import requests
 import json
 import time
 
+LOCALHOST = "127.0.0.1"
+ipaddr = ""
 user = "admin"
 pword = "vandy"
-baseurl = "http://{user}:{pword}@127.0.0.1:5984/".format(user=user, pword=pword)
+baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=LOCALHOST)
 dbname = "test/"
 
 def dataMaker():
