@@ -13,7 +13,6 @@
 
 import os   # need this for popen
 import json
-import sys
 import time # for sleep
 
 from kafka import KafkaConsumer  # consumer of events
@@ -30,10 +29,10 @@ dbname = "test/"
 # We can make this more sophisticated/elegant but for now it is just
 # hardcoded to the setup I have on my local VMs
 
-def externalConsumer(ipaddr):
+def externalConsumer():
     # acquire the consumer
     # (you will need to change this to your bootstrap server's IP addr)
-    consumer = KafkaConsumer(bootstrap_servers="{}:9092".format(ipaddr))
+    consumer = KafkaConsumer(bootstrap_servers="192.168.15.3:9092")
     consumer.subscribe(topics=["utilizations"])
 
     # we keep reading and printing
@@ -87,8 +86,6 @@ def couchdbInterface(d):
     response = s.put(url+useid, data, timeout=100)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1: 
-        ipaddr = sys.argv[1]
-        externalConsumer(ipaddr)
-    else:
-        dummyConsumer()
+    #consumer = KafkaConsumer (bootstrap_servers="192.168.15.3:9092")
+    #if not consumer:
+    dummyConsumer()
