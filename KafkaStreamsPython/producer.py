@@ -15,6 +15,7 @@
 #
 
 import os   # need this for popen
+import sys # for ipaddr as a command line argumen
 import time # for sleep
 from kafka import KafkaProducer  # producer of events
 
@@ -23,35 +24,44 @@ from kafka import KafkaProducer  # producer of events
 
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
-producer = KafkaProducer (bootstrap_servers="192.168.15.3:9092", 
+
+def run(ipadd):
+    producer = KafkaProducer (bootstrap_servers="{}:9092".format(ipaddr), 
                                           acks=1)  # wait for leader to write to log
 
-# say we send the contents 100 times after a sleep of 1 sec in between
-for i in range (100):
+    # say we send the contents 100 times after a sleep of 1 sec in between
+    for i in range (100):
     
     # get the output of the top command
-    process = os.popen ("top -n 1 -b")
+        process = os.popen ("top -n 1 -b")
 
-    # read the contents that we wish to send as topic content
-    contents = process.read ()
+        # read the contents that we wish to send as topic content
+        contents = process.read ()
 
-    # send the contents under topic utilizations. Note that it expects
-    # the contents in bytes so we convert it to bytes.
-    #
-    # Note that here I am not serializing the contents into JSON or anything
-    # as such but just taking the output as received and sending it as bytes
-    # You will need to modify it to send a JSON structure, say something
-    # like <timestamp, contents of top>
-    #
-    producer.send ("utilizations", value=bytes (contents, 'ascii'))
-    producer.flush ()   # try to empty the sending buffer
+        # send the contents under topic utilizations. Note that it expects
+        # the contents in bytes so we convert it to bytes.
+        #
+        # Note that here I am not serializing the contents into JSON or anything
+        # as such but just taking the output as received and sending it as bytes
+        # You will need to modify it to send a JSON structure, say something
+        # like <timestamp, contents of top>
+        #
+        producer.send ("utilizations1", value=bytes (contents, 'ascii'))
+        producer.flush ()   # try to empty the sending buffer
 
-    # sleep a second
-    time.sleep (1)
+        # sleep a second
+        time.sleep (1)
 
-# we are done
-producer.close ()
-    
+        # we are done
+        producer.close ()
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        ipaddr = sys.argv[1]
+        run(ipaddr)
+    else:
+        ipaddr = '127.0.0.1'
+        run(ipaddr)
 
 
 
