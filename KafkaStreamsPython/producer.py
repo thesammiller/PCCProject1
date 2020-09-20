@@ -52,8 +52,8 @@ def run(ipadd):
         # sleep a second
         time.sleep (1)
 
-        # we are done
-        producer.close ()
+    # we are done
+    producer.close ()
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
