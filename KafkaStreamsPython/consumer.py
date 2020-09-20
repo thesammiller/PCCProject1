@@ -23,8 +23,8 @@ LOCALHOST = "127.0.0.1"
 ipaddr = ""
 user = "admin"
 pword = "vandy"
-baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=LOCALHOST)
-dbname = "test/"
+
+dbname = "project1/"
 
 
 # We can make this more sophisticated/elegant but for now it is just
@@ -33,8 +33,8 @@ dbname = "test/"
 def externalConsumer(ipaddr):
     # acquire the consumer
     # (you will need to change this to your bootstrap server's IP addr)
-    consumer = KafkaConsumer(bootstrap_servers="{}:9092".format(ipaddr))
-    consumer.subscribe(topics=["utilizations"])
+    consumer = KafkaConsumer(bootstrap_servers="{}:9092".format(LOCALHOST))
+    consumer.subscribe(topics=["utilizations1", "utilizations2", "utilizations3"])
 
     # we keep reading and printing
     for msg in consumer:
@@ -49,7 +49,7 @@ def externalConsumer(ipaddr):
         # Note that I am not showing code to obtain the incoming data as JSON
         # nor am I showing any code to connect to a backend database sink to
         # dump the incoming data. You will have to do that for the assignment.
-        couchdbInterface(str(msg.value, 'ascii'))
+        couchdbInterface(ipaddr, str(msg.value, 'ascii'))
 
     # we are done. As such, we are not going to get here as the above loop
     # is a forever loop.
@@ -70,11 +70,12 @@ def dummyConsumer():
         # like <timestamp, contents of top>
         #
 
-        couchdbInterface(contents)
+        couchdbInterface(LOCALHOST, contents)
         # sleep a second
         time.sleep(1)
 
-def couchdbInterface(d):
+def couchdbInterface(ip, d):
+    baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=ip)
     url = baseurl + dbname
     msg = {"time": time.time(), "data": d}
     data = json.dumps(msg)
