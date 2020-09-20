@@ -62,7 +62,7 @@ def run(ipaddr):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
+    if sys.argv > 1:
         ipaddr = sys.argv[1]
     else:
         ipaddr = LOCALHOST
