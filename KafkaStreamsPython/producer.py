@@ -25,19 +25,21 @@ from kafka import KafkaProducer  # producer of events
 # acquire the producer
 # (you will need to change this to your bootstrap server's IP addr)
 
-def run(ipadd):
+def run(ipaddr):
     producer = KafkaProducer (bootstrap_servers="{}:9092".format(ipaddr), 
-                                          acks=1)  # wait for leader to write to log
-
+                                          acks=1)
+    # wait for leader to write to log
+    
     # say we send the contents 100 times after a sleep of 1 sec in between
     for i in range (100):
+        print("Loop ", i)
     
-    # get the output of the top command
+        # get the output of the top command
         process = os.popen ("top -n 1 -b")
-
+        
         # read the contents that we wish to send as topic content
         contents = process.read ()
-
+        print("Got contents.")
         # send the contents under topic utilizations. Note that it expects
         # the contents in bytes so we convert it to bytes.
         #
@@ -47,8 +49,9 @@ def run(ipadd):
         # like <timestamp, contents of top>
         #
         producer.send ("utilizations1", value=bytes (contents, 'ascii'))
-        producer.flush ()   # try to empty the sending buffer
-
+        print("Sending")
+        producer.flush()   # try to empty the sending buffer
+        print("Sleeping")
         # sleep a second
         time.sleep (1)
 
@@ -58,6 +61,7 @@ def run(ipadd):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         ipaddr = sys.argv[1]
+        print("Running with IP address: {}".format(ipaddr))
         run(ipaddr)
     else:
         ipaddr = '127.0.0.1'
