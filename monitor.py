@@ -1,19 +1,20 @@
 import requests
 import json
 import time
+from pprint import pprint
 
 LOCALHOST = "127.0.0.1"
 ipaddr = ""
 user = "admin"
 pword = "vandy"
 baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=LOCALHOST)
-dbname = "test/"
+dbname = "project1/"
 
 def dataMaker():
     data = json.dumps({"time": "hello"})
     return data
 
-if __name__ == "__main__":
+def couchdbInterface():
     url = baseurl + dbname
     data = dataMaker()
     s = requests.Session()
@@ -22,5 +23,13 @@ if __name__ == "__main__":
     newid = json.loads(uuid.text)
     useid = newid['uuids'][0]
 
-    response = s.put(url+useid, data, timeout=100)
-    
+    #response = s.put(url+useid, data, timeout=100)
+    response = s.get(url)
+    data = json.loads(response.text)
+    print("*"*64)
+    pprint(data)
+    time.sleep(4)
+
+if __name__ == "__main__":
+    while True:
+        couchdbInterface()
