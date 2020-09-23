@@ -10,20 +10,15 @@ pword = "vandy"
 baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=LOCALHOST)
 dbname = "project1/"
 
-def dataMaker():
-    data = json.dumps({"time": "hello"})
-    return data
-
 def couchdbInterface():
     url = baseurl + dbname
-    data = dataMaker()
     s = requests.Session()
     s.headers.update({"Content-type": "application/json"})
     uuid = s.get(baseurl+"_uuids")
     newid = json.loads(uuid.text)
     useid = newid['uuids'][0]
 
-    #response = s.put(url+useid, data, timeout=100)
+
     response = s.get(url)
     data = json.loads(response.text)
     print("*"*64)
