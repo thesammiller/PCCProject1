@@ -17,6 +17,7 @@
 import os   # need this for popen
 import sys # for ipaddr as a command line argumen
 import time # for sleep
+import json # for data
 from kafka import KafkaProducer  # producer of events
 
 # We can make this more sophisticated/elegant but for now it is just
@@ -27,9 +28,13 @@ from kafka import KafkaProducer  # producer of events
 
 def run(ipaddr):
     producer = KafkaProducer (bootstrap_servers="{}:9092".format(ipaddr), 
-                                          acks=1)
-    # wait for leader to write to log
-    
+                                    acks=1, value_serializer = lambda v:
+    json.dumps(v).encode('utf-8'))                                
+
+    #wait for leader to write to log
+    #TODO - might be nice to have this as run() argument
+    topic = "utilizations1"
+
     # say we send the contents 100 times after a sleep of 1 sec in between
     for i in range (100):
         print("Loop ", i)
@@ -37,9 +42,16 @@ def run(ipaddr):
         # get the output of the top command
         process = os.popen ("top -n 1 -b")
         
-        # read the contents that we wish to send as topic content
+        #ERJ - added CPU time as GMT (not sure where in the world our cloud VMs are)
+        #... note that this isn't exactly clock ticks from the os call, but .read() util
+        #... isn't exactly deterministic either
+        time = time.asctime(time.gmtime(time.time()))
+    
+        #read the contents that we wish to send as topic content
         contents = process.read ()
+
         print("Got contents.")
+
         # send the contents under topic utilizations. Note that it expects
         # the contents in bytes so we convert it to bytes.
         #
@@ -48,7 +60,11 @@ def run(ipaddr):
         # You will need to modify it to send a JSON structure, say something
         # like <timestamp, contents of top>
         #
-        producer.send ("utilizations1", value=bytes (contents, 'ascii'))
+        producer.send (topic, 
+        {'topic' : topic, 
+        'timestamp': time, 
+        'contents of top': contents})
+
         print("Sending")
         producer.flush()   # try to empty the sending buffer
         print("Sleeping")

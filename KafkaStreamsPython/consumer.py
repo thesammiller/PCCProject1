@@ -33,7 +33,8 @@ dbname = "project1/"
 def externalConsumer(ipaddr):
     # acquire the consumer
     # (you will need to change this to your bootstrap server's IP addr)
-    consumer = KafkaConsumer(bootstrap_servers="{}:9092".format(LOCALHOST))
+    consumer = KafkaConsumer(bootstrap_servers="{}:9092".format(LOCALHOST),
+                    value_deserializer = lambda m: json.loads(m.decode('utf-8')))
     consumer.subscribe(topics=["utilizations1", "utilizations2", "utilizations3"])
 
     # we keep reading and printing
@@ -49,7 +50,7 @@ def externalConsumer(ipaddr):
         # Note that I am not showing code to obtain the incoming data as JSON
         # nor am I showing any code to connect to a backend database sink to
         # dump the incoming data. You will have to do that for the assignment.
-        couchdbInterface(ipaddr, str(msg.value, 'ascii'))
+        couchdbInterface(ipaddr, msg)
 
     # we are done. As such, we are not going to get here as the above loop
     # is a forever loop.
@@ -77,8 +78,7 @@ def dummyConsumer():
 def couchdbInterface(ip, d):
     baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=ip)
     url = baseurl + dbname
-    msg = {"time": time.time(), "data": d}
-    data = json.dumps(msg)
+
     s = requests.Session()
     s.headers.update({"Content-type": "application/json"})
     uuid = s.get(baseurl+"_uuids")
