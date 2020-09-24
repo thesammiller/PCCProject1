@@ -52,7 +52,7 @@ def externalConsumer(ipaddr):
         # dump the incoming data. You will have to do that for the assignment.
 
         
-        couchdbInterface(ipaddr, json.dumps(msg.value))
+        couchdbInterface(ipaddr, msg.value)
 
     # we are done. As such, we are not going to get here as the above loop
     # is a forever loop.
@@ -77,10 +77,10 @@ def dummyConsumer():
         # sleep a second
         time.sleep(1)
 
-def couchdbInterface(ip, data):
+def couchdbInterface(ip, d):
     baseurl = "http://{user}:{pword}@{ipaddr}:5984/".format(user=user, pword=pword, ipaddr=ip)
     url = baseurl + dbname
-
+    data = json.dumps(d)
     s = requests.Session()
     s.headers.update({"Content-type": "application/json"})
     uuid = s.get(baseurl+"_uuids")
