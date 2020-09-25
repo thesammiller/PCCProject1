@@ -45,7 +45,7 @@ def run(ipaddr):
         #ERJ - added CPU time as GMT (not sure where in the world our cloud VMs are)
         #... note that this isn't exactly clock ticks from the os call, but .read() util
         #... isn't exactly deterministic either
-        time = time.asctime(time.gmtime(time.time()))
+        timestamp = time.asctime(time.gmtime(time.time()))
     
         #read the contents that we wish to send as topic content
         contents = process.read ()
@@ -62,7 +62,7 @@ def run(ipaddr):
         #
         producer.send (topic, 
         {'topic' : topic, 
-        'timestamp': time, 
+        'timestamp': timestamp, 
         'contents of top': contents})
 
         print("Sending")
