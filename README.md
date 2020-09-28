@@ -37,15 +37,15 @@
 ## Server IP Addresses - Reference
 | Type            | Name | DNS Name   | IP Address     | Description                |
 |-----------------|------|------------|----------------|----------------------------|
-| Chameleon Cloud | VM2  | VT8-VM2 | 129.114.25.233 | Chameleon Cloud Consumer 1 |
-| Chameleon Cloud | VM3  | VT8-VM3 | 129.11.27.249  | Chameleon Cloud Consumer 2 |
+| Chameleon Cloud | VM2  | VT8-VM2    | 129.114.25.233 | Chameleon Cloud Consumer 1 |
+| Chameleon Cloud | VM3  | VT8-VM3    | 129.11.27.249  | Chameleon Cloud Consumer 2 |
 | AWS             | VM2  | VT8-VM2    | 54.145.170.98  | AWS Cloud Consumer 1       |
 | AWS             | VM3  | VT8-VM3    | 34.195.182.141 | AWS Cloud Consumer 2       |
 
 ## Monitor Performance
 Couch DB Interfaces for Monitoring Incoming Messages:
 
-| Type            | Name | DNS Name | Description                                 |
-|-----------------|------|----------|---------------------------------------------|
-| Chameleon Cloud | VM3  | VT8-VM3  | http://129.11.27.249:5984/_utils/#login |
-| AWS             | VM3  | VT8-VM3  | http://34.195.182.141:5984/_utils/#login    |
+| Type            | Name | DNS Name   | CouchDB Link                               |
+|-----------------|------|------------|--------------------------------------------|
+| Chameleon Cloud | VM3  | VT8-VM3    | http://129.11.27.249.233:5984/_utils/#login|
+| AWS             | VM3  | VT8-VM3    | http://34.195.182.141:5984/_utils/#login   |
