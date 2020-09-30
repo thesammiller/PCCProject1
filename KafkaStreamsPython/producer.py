@@ -27,16 +27,11 @@ from kafka import KafkaProducer  # producer of events
 # (you will need to change this to your bootstrap server's IP addr)
 
 def run(ipaddr):
-    try:
-        producer = KafkaProducer (bootstrap_servers="{}:9092".format(ipaddr), 
+    
+    producer = KafkaProducer (bootstrap_servers="{}:9092".format(ipaddr), 
                                     acks=1, value_serializer = lambda v:
                                   json.dumps(v).encode('utf-8'))                                
 
-    except:
-        print("Unable to find a Kafka broker")
-        return
-    
-        
     #wait for leader to write to log
     #TODO - might be nice to have this as run() argument
     topic = "utilizations1"
