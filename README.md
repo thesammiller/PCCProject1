@@ -47,5 +47,5 @@ Couch DB Interfaces for Monitoring Incoming Messages:
 
 | Type            | Name | DNS Name   | CouchDB Link                               |
 |-----------------|------|------------|--------------------------------------------|
-| Chameleon Cloud | VM3  | VT8-VM3    | http://129.11.27.249:5984/_utils/#login|
+| Chameleon Cloud | VM3  | VT8-VM3    | http://129.114.27.249:5984/_utils/#login   |
 | AWS             | VM3  | VT8-VM3    | http://34.195.182.141:5984/_utils/#login   |
