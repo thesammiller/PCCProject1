@@ -38,7 +38,7 @@
 | Type            | Name | DNS Name   | IP Address     | Description                |
 |-----------------|------|------------|----------------|----------------------------|
 | Chameleon Cloud | VM2  | VT8-VM2    | 129.114.25.233 | Chameleon Cloud Consumer 1 |
-| Chameleon Cloud | VM3  | VT8-VM3    | 129.11.27.249  | Chameleon Cloud Consumer 2 |
+| Chameleon Cloud | VM3  | VT8-VM3    | 129.114.27.249  | Chameleon Cloud Consumer 2 |
 | AWS             | VM2  | VT8-VM2    | 54.145.170.98  | AWS Cloud Consumer 1       |
 | AWS             | VM3  | VT8-VM3    | 34.195.182.141 | AWS Cloud Consumer 2       |
 
